@@ -1,7 +1,8 @@
+
 return {
   "yetone/avante.nvim",
   event = "VeryLazy",
-  version = false, -- Never set this value to "*"! Never!
+  version = false, -- Never set this value to "*! Never!"
 
   opts = {
     provider = "openai", -- Use your local Qwen model for both planning and applying
@@ -51,5 +52,26 @@ return {
       },
       ft = { "markdown", "Avante" },
     },
+    -- Code Companion for inline ghost text
+    {
+      "github/CodeCompanion.nvim",
+      dependencies = { "nvim-lua/plenary.nvim" },
+      config = function()
+        require("codecompanion").setup({
+          suggestion = {
+            enabled = true,
+            auto_trigger = true,
+            debounce = 75,
+            keymap = {
+              accept = "<C-l>",
+              next = "<C-j>",
+              prev = "<C-k>",
+              dismiss = "<C-h>",
+            },
+          },
+        })
+      end,
+    },
   },
 }
+

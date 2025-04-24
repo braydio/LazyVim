@@ -1,0 +1,23 @@
+Directory Tree Mapping
+[33m/home/braydenchaffee/.config/nvim[0m
+├── init.lua
+├── lazy-lock.json
+├── lazyvim.json
+├── LICENSE
+├── lua
+│   ├── config
+│   │   ├── autocmds.lua
+│   │   ├── diagnostics.lua
+│   │   ├── keymaps.lua
+│   │   ├── lazy.lua
+│   │   ├── lsp_patch.lua
+│   │   ├── options.lua
+│   │   └── whichkey.lua
+│   └── plugins
+│       ├── avante.lua
+│       ├── example.lua
+│       ├── lazy.nvim
+│       └── vue-lsp.lua
+├── README.md
+├── stylua.toml
+└── temp

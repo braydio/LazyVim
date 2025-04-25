@@ -1,17 +1,30 @@
+-- lua/plugins/snacks-fix.lua
+
 return {
-  'tamton-aquib/snacks.nvim',
-  opts = {
-    picker = {
-      core = {
-        update_titles = function(self)
-          local titles = self.titles or {}
-          if type(titles) ~= 'table' then
-            vim.notify('Expected table for titles in update_titles', vim.log.levels.ERROR)
-            return
-          end
-          local values = vim.tbl_values(titles)
-          -- Call original logic here if needed
-        end,
+  {
+    'folke/snacks.nvim',
+    priority = 1000,
+    lazy = false,
+    opts = {
+      statuscolumn = {
+        enabled = true,
+        separator = '│', -- clean vertical line
+        setopt = true, -- let snacks manage `vim.o.statuscolumn`
+        foldsymbols = {
+          open = '', -- Nerd Font downward arrow
+          closed = '', -- Nerd Font right arrow
+          separator = ' ', -- spacing between fold icon and line number
+        },
+        number = true, -- show line numbers
+        relativenumber = true, -- use relative line numbers
+        signcolumn = 'auto', -- use whatever signs are present (e.g., Git, LSP)
+      },
+      -- Optionally, enable more snacks modules:
+      notifications = {
+        enabled = true, -- popup notifications
+      },
+      breadcrumbs = {
+        enabled = true, -- show file/module path in winbar
       },
     },
   },

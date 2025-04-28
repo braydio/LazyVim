@@ -13,4 +13,6 @@ return {
   { '<leader>li', '<cmd>LspInfo<CR>', desc = 'LSP Info' },
   { '<leader>tr', ':!npm run dev<CR>', desc = 'Run Frontend' },
   { '<leader>tb', ':!npm run build<CR>', desc = 'Build Frontend' },
+  { '<leader>ai', '<cmd>GpChatNew<CR>', desc = 'Ask AI (gp.nvim)' },
+  { '<leader>ac', '<cmd>CodeCompanion<CR>', desc = 'AI Chat (codecompanion.nvim)' },
 }

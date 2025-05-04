@@ -1,2 +1,3 @@
 *.local
 lazy-lock.json
+.env

@@ -1,4 +1,4 @@
--- lua/plugins/snacks-fix.lua
+-- lua/plugins/snacks-fix.lu
 
 return {
   {

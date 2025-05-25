@@ -1,76 +1,115 @@
 return {
   'Robitx/gp.nvim',
+  event = 'VeryLazy',
   config = function()
-    require('gp').setup {
+    local gp = require 'gp'
+
+    gp.setup {
       openai_api_key = os.getenv 'OPENAI_API_KEY',
-
-      system_prompt = 'You are a helpful assistant inside a code editor. Be concise and helpful for Brayden. Avoid verbose explanations unless asked.',
-
-      chat = {
-        window = {
-          border = 'rounded',
-          width = 0.8,
-          height = 0.6,
-        },
-      },
-
       agents = {
         {
-          name = 'GPT-4o Mini',
-          chat = true,
-          completion = true,
-          params = {
-            model = 'gpt-4o-mini',
-            temperature = 0.2,
-            top_p = 1,
-          },
-        },
-        {
-          name = 'GPT-4o',
+          name = 'ChatGPT',
           chat = true,
           completion = true,
           params = {
             model = 'gpt-4o',
-            temperature = 0.4,
+            temperature = 0.2,
             top_p = 1,
           },
-        },
-        {
-          name = 'GPT-3.5 Turbo',
-          chat = true,
-          completion = true,
-          params = {
-            model = 'gpt-3.5-turbo',
-            temperature = 0.3,
-            top_p = 1,
-          },
+          system_prompt = 'You are a helpful coding assistant.',
         },
       },
 
-      prompts = {
-        {
-          name = 'Refactor Code',
-          desc = 'Refactor the selected code to improve readability or efficiency',
-          mode = { 'v', 'n' },
-          action = 'chat',
-          prompt = 'Refactor this code. Improve naming, remove repetition, and simplify logic where possible.',
-        },
-        {
-          name = 'Summarize File',
-          desc = 'Generate a summary of the open file',
-          mode = { 'n' },
-          action = 'chat',
-          prompt = 'Summarize the key functions and purpose of this file.',
-        },
-        {
-          name = 'Generate Unit Tests',
-          desc = 'Generate unit tests for the selected code block',
-          mode = { 'v', 'n' },
-          action = 'chat',
-          prompt = 'Write a full set of unit tests for this code. Use best practices.',
+      templates = {
+        rewrite = {
+          -- 🔍 Code Review Template
+          ReviewCode = {
+            prompt = [[
+Please review the following code block. Identify any errors or corrections that should be implemented.
+
+{{selection}}
+
+Respond with the corrected code. Include *only* the corrected code in your response and nothing else.
+            ]],
+          },
+
+          -- 🛠 Refactor Template
+          RefactorCode = {
+            prompt = [[
+Refactor the following code to improve readability, performance, and maintainability. Keep behavior the same.
+
+{{selection}}
+
+Return only the refactored code.
+            ]],
+          },
+
+          -- 🧠 Explain Template
+          ExplainCode = {
+            prompt = [[
+Explain what the following code does, line by line.
+
+{{selection}}
+
+Write the explanation in plain English for someone new to this language.
+            ]],
+          },
+
+          -- 💬 Comment Template
+          CommentCode = {
+            prompt = [[
+Add helpful comments to the following code to clarify its purpose.
+
+{{selection}}
+
+Return only the updated code with comments.
+            ]],
+          },
+
+          -- 🏷 Add Type Annotations
+          AddTypes = {
+            prompt = [[
+Add appropriate type annotations to the following code, based on standard typing practices for the language.
+
+{{selection}}
+
+Return only the updated code.
+            ]],
+          },
         },
       },
     }
+
+    -- Keymaps for each template
+    vim.keymap.set(
+      'v',
+      '<leader>gr',
+      ':<C-u>GpRewrite ReviewCode<CR>',
+      { noremap = true, silent = true, desc = '🧪 Review and fix code' }
+    )
+    vim.keymap.set(
+      'v',
+      '<leader>gf',
+      ':<C-u>GpRewrite RefactorCode<CR>',
+      { noremap = true, silent = true, desc = '🛠 Refactor code' }
+    )
+    vim.keymap.set(
+      'v',
+      '<leader>ge',
+      ':<C-u>GpRewrite ExplainCode<CR>',
+      { noremap = true, silent = true, desc = '🧠 Explain code' }
+    )
+    vim.keymap.set(
+      'v',
+      '<leader>gc',
+      ':<C-u>GpRewrite CommentCode<CR>',
+      { noremap = true, silent = true, desc = '💬 Add comments' }
+    )
+    vim.keymap.set(
+      'v',
+      '<leader>gt',
+      ':<C-u>GpRewrite AddTypes<CR>',
+      { noremap = true, silent = true, desc = '🏷 Add type annotations' }
+    )
   end,
-  cmd = { 'GpChatNew', 'GpChatResp', 'GpChatToggle', 'GpChatPaste' },
 }
